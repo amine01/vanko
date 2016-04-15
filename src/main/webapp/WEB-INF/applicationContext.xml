@@ -9,7 +9,7 @@
 	default-autowire="byName">
 
 
-	<jpa:repositories base-package="com.essamine.entity" />
+	<jpa:repositories base-package="com.essamine.entities" />
 
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">

@@ -1,36 +1,35 @@
-package com.essamine.entity;
+package com.essamine.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Photo extends UrlEntity {
-	
+public class Email extends UrlEntity {
 	@Column
-	private String nomPhoto;
+	private String email;
 	@Column
-	private String urlPhoto;
+	private Boolean pola;
 	
 	@ManyToOne(optional=false)
 	private Personne personne;
 
 	// Getters & Setters
 
-	public String getNomPhoto() {
-		return nomPhoto;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setNomPhoto(String nomPhoto) {
-		this.nomPhoto = nomPhoto;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getUrlPhoto() {
-		return urlPhoto;
+	public Boolean getPola() {
+		return pola;
 	}
 
-	public void setUrlPhoto(String urlPhoto) {
-		this.urlPhoto = urlPhoto;
+	public void setPola(Boolean pola) {
+		this.pola = pola;
 	}
 
 	public Personne getPersonne() {
@@ -40,8 +39,6 @@ public class Photo extends UrlEntity {
 	public void setPersonne(Personne personne) {
 		this.personne = personne;
 	}
-
-
 	
 	
 

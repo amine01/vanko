@@ -1,4 +1,4 @@
-package com.essamine.entity;
+package com.essamine.entities;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +29,7 @@ public class Personne extends UrlEntity {
 	@OneToMany(mappedBy="personne")
 	private List<Photo> photos;
 	
-	@OneToMany
+	@OneToMany(mappedBy="personne")
 	private List<PersonneFonction> personneFonctions;
 
 	// Getters & Setters

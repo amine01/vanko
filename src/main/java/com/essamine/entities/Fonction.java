@@ -1,4 +1,4 @@
-package com.essamine.entity;
+package com.essamine.entities;
 
 import java.util.List;
 
@@ -11,7 +11,8 @@ public class Fonction extends UrlEntity {
 	@Column
 	private String fonction;
 
-	@OneToMany
+	
+	@OneToMany(mappedBy="fonction")
 	private List<PersonneFonction> personneFonctions;
 
 	// Getters & Setters

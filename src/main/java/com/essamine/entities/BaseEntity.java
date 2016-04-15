@@ -1,4 +1,4 @@
-package com.essamine.entity;
+package com.essamine.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

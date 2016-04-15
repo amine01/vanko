@@ -1,4 +1,4 @@
-package com.essamine.entity;
+package com.essamine.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
