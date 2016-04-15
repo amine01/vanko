@@ -16,14 +16,66 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- ############# HIBERNATE OR JPA PROVIDER ########### -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.1.7.Final</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.0.Final</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- ############# END ########### -->
 
+		<!-- ############# DATASOURCE Impl ########### -->
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>0.7.1.RELEASE</version>
+		</dependency>
+
+		<!-- ############# END ########### -->
+
+		<!-- ############# SPRING ########### -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>3.1.1.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.0.3.RELEASE</version>
+		</dependency>
+
+		<!-- ############# END ########### -->
+
+		<!-- ############# LOGGING ########### -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.5.10</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- ############# END ########### -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.8</version>
+			<scope>runtime</scope>
+		</dependency>
 
 	</dependencies>
 	<build>
