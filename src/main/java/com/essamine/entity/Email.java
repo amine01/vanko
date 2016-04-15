@@ -11,7 +11,7 @@ public class Email extends UrlEntity {
 	@Column
 	private Boolean pola;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Personne personne;
 
 	// Getters & Setters

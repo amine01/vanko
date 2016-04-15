@@ -9,7 +9,7 @@ public class Surnom extends UrlEntity {
 
 	@Column
 	private String surnom;
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Personne personne;
 
 	// Getters & Setters

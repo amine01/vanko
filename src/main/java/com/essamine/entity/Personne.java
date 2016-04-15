@@ -20,12 +20,15 @@ public class Personne extends UrlEntity {
 	@Column
 	private Date dateNaissance;
 
-	@OneToMany
+	@OneToMany(mappedBy="personne")
 	private List<Surnom> surnoms;
-	@OneToMany
+	
+	@OneToMany(mappedBy="personne")
 	private List<Email> emails;
-	@OneToMany
+	
+	@OneToMany(mappedBy="personne")
 	private List<Photo> photos;
+	
 	@OneToMany
 	private List<PersonneFonction> personneFonctions;
 

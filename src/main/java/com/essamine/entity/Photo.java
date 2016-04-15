@@ -12,7 +12,7 @@ public class Photo extends UrlEntity {
 	@Column
 	private String urlPhoto;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Personne personne;
 
 	// Getters & Setters

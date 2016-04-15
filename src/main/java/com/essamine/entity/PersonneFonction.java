@@ -13,10 +13,10 @@ public class PersonneFonction extends UrlEntity {
 	@Column
 	private Date dateDebut;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Personne personne;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Fonction fonction;
 
 	// pas important
