@@ -19,6 +19,8 @@
 			<bean class="org.hsqldb.jdbc.JDBCDataSource">
 				<property name="url"
 					value="jdbc:hsqldb:file:E:/Workspace_sts/vanko/target/data/vankoDB" />
+					
+					
 			</bean>
 		</property>
 	</bean>
