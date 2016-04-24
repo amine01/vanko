@@ -123,7 +123,7 @@
 
 		var newPhoto = document.createElement('input');
 		newPhoto.type = 'file';
-		newPhoto.name = "photos[" + countPhoto + "].urlPhoto";
+		newPhoto.name = "photos[" + countPhoto + "].file";
 
 		var br = document.createElement('br');
 
@@ -301,8 +301,8 @@
 				<li><button type="button" onclick="addPhoto(); return false;">
 						<b> + </b>
 					</button></li>
-				<spring:bind path="photos[0].urlPhoto">
-					<li>Photo :<form:input type="file" path="photos[0].urlPhoto"
+				<spring:bind path="photos[0].file">
+					<li>Photo :<form:input type="file" path="photos[0].file"
 							name="photo" value="upload photo" /></li>
 				</spring:bind>
 

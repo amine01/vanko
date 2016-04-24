@@ -6,12 +6,18 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+	<context:property-placeholder location="classpath:info.properties"/>
 
 	<!-- css -->
 	<mvc:resources mapping="/assets/**" location="/assets/" />
+	
+	<mvc:resources mapping="/images/**" location="file:///${path}" />
+<!-- file:///c:/uploadfiles/ -->
+ 
+
 
 	<context:component-scan base-package="com.essamine.controllers" />
-	<context:property-placeholder location="classpath:info.properties"/>
+
 
 	<mvc:annotation-driven />
 

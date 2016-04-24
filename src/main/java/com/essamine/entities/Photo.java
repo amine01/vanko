@@ -3,6 +3,9 @@ package com.essamine.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Photo extends UrlEntity {
@@ -14,6 +17,11 @@ public class Photo extends UrlEntity {
 	
 	@ManyToOne(optional=false)
 	private Personne personne;
+	
+	//
+	@Transient
+	 MultipartFile file;
+	//
 
 	// Getters & Setters
 
@@ -39,6 +47,14 @@ public class Photo extends UrlEntity {
 
 	public void setPersonne(Personne personne) {
 		this.personne = personne;
+	}
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 
 

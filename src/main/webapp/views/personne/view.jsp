@@ -84,7 +84,7 @@
 			</tr>
 			<c:forEach var="photo" items="${personne.photos}">
 				<tr>
-					<td><img src="${photo.urlPhoto}" alt="Smiley face" width="42"
+					<td><img src="images/${photo.nomPhoto}" alt="Smiley face" width="42"
 						height="42"></td>
 					<td><a
 						href="${photo.URL}&delete"> Delete </a></td>

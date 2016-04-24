@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.essamine.entities.Email;
 import com.essamine.entities.Fonction;
@@ -74,7 +75,7 @@ public class PersonneController {
 	}
 
 	@RequestMapping(value = "/personne", method = RequestMethod.POST, params = "add")
-	public String addPersonne(@Valid Personne personne, BindingResult bResult) {
+	public String addPersonne(@Valid Personne personne, BindingResult bResult) throws IOException {
 		//
 		List<Surnom> surnoms = personne.getSurnoms();
 		List<Email> emails = personne.getEmails();
@@ -103,9 +104,35 @@ public class PersonneController {
 
 		for (int i = 0; i < photos.size(); i++) {
 			photo = personne.getPhotos().get(i);
+			// upload photo
+			StringBuilder uniqueFileName = new StringBuilder(
+					uniqueFileName(photos.get(i).getFile().getOriginalFilename()));
+			StringBuilder newFileName = new StringBuilder(path + uniqueFileName);
+			photo.setNomPhoto(uniqueFileName.toString());
+			photo.setUrlPhoto(newFileName.toString());
+			System.out.println("getOriginalFilename : " + photos.get(i).getFile().getOriginalFilename());
+			System.out.println("name : " + photos.get(i).getFile().getName());
+			
+			uploadFile(photos.get(i).getFile(), newFileName.toString());
+			//
 			photo.setPersonne(personne);
 			photoRepository.save(photo);
 		}
+		// for (int i = 0; i < photos.length; i++) {
+		// photo = new Photo();
+		// StringBuilder uniqueFileName = new
+		// StringBuilder(uniqueFileName(photos[i].getOriginalFilename()));
+		// System.out.println("uniqueFileName " + uniqueFileName);
+		// StringBuilder newFileName = new StringBuilder(path + uniqueFileName);
+		// System.out.println("newFileName to string :"+newFileName);
+		// photo.setNomPhoto(uniqueFileName.toString());
+		// photo.setUrlPhoto(newFileName.toString());
+		// photo.setPersonne(per);
+		// //
+		// uploadFile(photos[i], newFileName.toString());
+		// //
+		// photoRepository.save(photo);
+		// }
 
 		for (int i = 0; i < personneFonctions.size(); i++) {
 			personneFonction = personne.getPersonneFonctions().get(i);
@@ -233,12 +260,12 @@ public class PersonneController {
 
 	public String uniqueFileName(String fileName) {
 		Random random = new Random();
-		int randomNumber = random.nextInt(10 - 1) + 1;
+		int randomNumber = random.nextInt(100 - 1) + 1;
 
 		String fileExtention = fileName.substring(fileName.length() - 3);
 		Calendar cal = Calendar.getInstance();
 
-		Long uniqueNumber = cal.getTimeInMillis() / 100000;
+		Long uniqueNumber = cal.getTimeInMillis() / 10000;
 		String uniqueFileName = (uniqueNumber + randomNumber) + "." + fileExtention;
 
 		return uniqueFileName;

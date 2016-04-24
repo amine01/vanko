@@ -1,6 +1,6 @@
-/*C9*/SET SCHEMA PUBLIC
+/*C5*/SET SCHEMA PUBLIC
 DISCONNECT
-/*C11*/SET SCHEMA PUBLIC
+/*C7*/SET SCHEMA PUBLIC
 alter table Email drop constraint FK3FF5B7C5B19B815
 alter table PersonneFonction drop constraint FK8A64545E406DA255
 alter table PersonneFonction drop constraint FK8A64545E5B19B815
@@ -23,33 +23,18 @@ alter table PersonneFonction add constraint FK8A64545E406DA255 foreign key (fonc
 alter table PersonneFonction add constraint FK8A64545E5B19B815 foreign key (personne_id) references Personne
 alter table Photo add constraint FK4984E125B19B815 foreign key (personne_id) references Personne
 alter table Surnom add constraint FK9448769C5B19B815 foreign key (personne_id) references Personne
-/*C12*/SET SCHEMA PUBLIC
-INSERT INTO PERSONNE VALUES(1,0,NULL,'ddddddddd','kkkkkkkkk')
+/*C8*/SET SCHEMA PUBLIC
+INSERT INTO PERSONNE VALUES(1,0,NULL,'gggggggg','gggggggggggggg')
 COMMIT
-INSERT INTO SURNOM VALUES(1,0,'kkkkkkkkkkkkkkkk',1)
+INSERT INTO SURNOM VALUES(1,0,'gggggggggggg',1)
 COMMIT
-INSERT INTO EMAIL VALUES(1,0,'kkkkkkkkkkkkkkkkkkkkkk',TRUE,1)
+INSERT INTO EMAIL VALUES(1,0,'ggggggggg',TRUE,1)
 COMMIT
-INSERT INTO PHOTO VALUES(1,0,NULL,NULL,1)
+INSERT INTO PHOTO VALUES(1,0,'146153762.jpg','C:\u005cuploadfiles\146153762.jpg',1)
 COMMIT
-INSERT INTO FONCTION VALUES(1,0,'kkkkkkkkkkkkkkk')
+INSERT INTO PHOTO VALUES(2,0,'146153748.jpg','C:\u005cuploadfiles\146153748.jpg',1)
+COMMIT
+INSERT INTO FONCTION VALUES(1,0,'ggg')
 COMMIT
 INSERT INTO PERSONNEFONCTION VALUES(1,0,NULL,NULL,1,1)
-COMMIT
-/*C15*/SET SCHEMA PUBLIC
-INSERT INTO PERSONNE VALUES(2,0,NULL,'essadkaoi','amine')
-COMMIT
-INSERT INTO SURNOM VALUES(2,0,'hmosa',2)
-COMMIT
-INSERT INTO SURNOM VALUES(3,0,'ba3bola',2)
-COMMIT
-INSERT INTO EMAIL VALUES(2,0,'hfhfh@kdkd.fr',TRUE,2)
-COMMIT
-INSERT INTO EMAIL VALUES(3,0,'lfkgkj@mlflf.fr',FALSE,2)
-COMMIT
-INSERT INTO PHOTO VALUES(2,0,NULL,NULL,2)
-COMMIT
-INSERT INTO FONCTION VALUES(2,0,'s')
-COMMIT
-INSERT INTO PERSONNEFONCTION VALUES(2,0,NULL,NULL,2,2)
 COMMIT
