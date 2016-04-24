@@ -110,27 +110,16 @@ public class PersonneController {
 		for (int i = 0; i < personneFonctions.size(); i++) {
 			personneFonction = personne.getPersonneFonctions().get(i);
 			fonction = fonctionRepository.save(personneFonction.getFonction());
-			
+
 			personneFonction.setFonction(fonction);
 			personneFonction.setPersonne(personne);
-			
-			personneFonctionRepository.save(personneFonction);
-			
-			//System.out.println(personneFonction.getFonction().getFonction());
-			// personneFonction.setPersonne(personne);
-			// personneFonction.setDateDebut(new Date());
-			// personneFonction.setDateFin(new Date());
-			// personneFonctionRepository.save(personneFonction);
-		}
 
-		// // protected String addSingle(@Valid Single single, BindingResult
-		// // bResult) {
-		// System.out.println("getSurnoms =" + personne.getSurnoms().size());
-		// System.out.println("getEmails =" + personne.getEmails().size());
-		// System.out.println("getPhotos =" + personne.getPhotos().size());
-		// System.out.println("getPersonneFonctions =" +
-		// personne.getPersonneFonctions().size());
-		return "personne/list";
+			personneFonctionRepository.save(personneFonction);
+
+		}
+		// model.addAttribute("personnes", personneRepository.findAll());
+		return "redirect:personnes";
+		// return "personne/list";
 	}
 
 	// @RequestMapping(value = "/personne", method = RequestMethod.POST, params
