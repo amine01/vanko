@@ -8,6 +8,7 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
 	default-autowire="byName">
 
+	<context:property-placeholder location="classpath:info.properties" />
 
 	<jpa:repositories base-package="com.essamine.repositories" />
 
@@ -17,10 +18,9 @@
 
 		<property name="datasourceBean">
 			<bean class="org.hsqldb.jdbc.JDBCDataSource">
-				<property name="url"
-					value="jdbc:hsqldb:file:E:/Workspace_sts/vanko/target/data/vankoDB" />
-					
-					
+				<property name="url" value="${urlbase}" />
+
+
 			</bean>
 		</property>
 	</bean>
@@ -32,7 +32,7 @@
 		</property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>

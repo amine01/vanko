@@ -84,54 +84,12 @@
 			</tr>
 			<c:forEach var="photo" items="${personne.photos}">
 				<tr>
-					<td><img src="images/${photo.nomPhoto}" alt="Smiley face" width="42"
-						height="42"></td>
-					<td><a
-						href="${photo.URL}&delete"> Delete </a></td>
+					<td><img src="images/${photo.nomPhoto}" alt="Smiley face"
+						width="42" height="42"></td>
+					<td><a href="${photo.URL}&delete"> Delete </a></td>
 				</tr>
 			</c:forEach>
 		</table>
 	</c:if>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
-<%-- 	<c:if test="${personnes.size()>0}">
-		<table>
-			<tr>
-				<th>Nom</th>
-				<th>Prenom</th>
-				<th>date de naissance</th>
-				<th></th>
-			</tr>
-
-			<c:forEach var="personne" items="${personnes}">
-				<tr>
-					<td><c:out value="${personne.nom}" /></td>
-					<td><c:out value="${personne.prenom}" /></td>
-					<td><c:out value="${personne.dateNaissance}" /></td>
-					<td>
-						<a href="${personne.URL}&edit"> Edit </a> | 
-						<a href="${personne.URL}&view"> View </a> |
-						<a href="${personne.URL}&delete"> Delete </a>
-					</td>
-				</tr>
-			</c:forEach>
-		</table>
-	</c:if> --%>

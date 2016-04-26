@@ -13,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.essamine.entities.Email;
 import com.essamine.entities.Fonction;
@@ -42,6 +43,9 @@ public class PersonneController {
 	@Value("${path}")
 	String path;
 
+	@Value("${recordPerPage}")
+	int recordPerPage;
+
 	@Autowired
 	PersonneRepository personneRepository;
 
@@ -62,8 +66,33 @@ public class PersonneController {
 
 	// i am here
 	@RequestMapping(value = "/personnes", method = RequestMethod.GET)
-	public String getPersons(Model model) {
-		model.addAttribute("personnes", personneRepository.findAll());
+	public String getPersons(Model model, @RequestParam(required = false) Integer page) {
+
+		int pageR = 1;
+
+		if (page != null) {
+			if (page <= 0)
+				page = 1;
+			pageR = page;
+		}
+
+		Page<Personne> personnes = personneRepository.findAll(new PageRequest(pageR - 1, recordPerPage));
+
+		// Number Of Records
+		int noOfRecords = personneRepository.findAll().size();
+		// Number Of Pages
+		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordPerPage);
+
+		System.out.println("page =" + page);
+		System.out.println("personnes.getSize =" + personnes.getSize());
+		System.out.println("noOfRecords =" + noOfRecords);
+		System.out.println("noOfPages =" + noOfPages);
+
+		model.addAttribute("personnes", personnes.getContent());
+		model.addAttribute("currentPage", pageR);
+		model.addAttribute("recordPerPage", recordPerPage);
+		model.addAttribute("noOfPages", noOfPages);
+
 		return "personne/list";
 	}
 
@@ -74,8 +103,17 @@ public class PersonneController {
 		return "personne/add";
 	}
 
+	@RequestMapping(value = "/personne", method = RequestMethod.POST)
+	public String filterPersonnes(@RequestParam String word) {
+
+		return "";
+	}
+
 	@RequestMapping(value = "/personne", method = RequestMethod.POST, params = "add")
 	public String addPersonne(@Valid Personne personne, BindingResult bResult) throws IOException {
+		if (bResult.hasErrors()) {
+			return "personne/add";
+		}
 		//
 		List<Surnom> surnoms = personne.getSurnoms();
 		List<Email> emails = personne.getEmails();
@@ -112,27 +150,12 @@ public class PersonneController {
 			photo.setUrlPhoto(newFileName.toString());
 			System.out.println("getOriginalFilename : " + photos.get(i).getFile().getOriginalFilename());
 			System.out.println("name : " + photos.get(i).getFile().getName());
-			
+
 			uploadFile(photos.get(i).getFile(), newFileName.toString());
 			//
 			photo.setPersonne(personne);
 			photoRepository.save(photo);
 		}
-		// for (int i = 0; i < photos.length; i++) {
-		// photo = new Photo();
-		// StringBuilder uniqueFileName = new
-		// StringBuilder(uniqueFileName(photos[i].getOriginalFilename()));
-		// System.out.println("uniqueFileName " + uniqueFileName);
-		// StringBuilder newFileName = new StringBuilder(path + uniqueFileName);
-		// System.out.println("newFileName to string :"+newFileName);
-		// photo.setNomPhoto(uniqueFileName.toString());
-		// photo.setUrlPhoto(newFileName.toString());
-		// photo.setPersonne(per);
-		// //
-		// uploadFile(photos[i], newFileName.toString());
-		// //
-		// photoRepository.save(photo);
-		// }
 
 		for (int i = 0; i < personneFonctions.size(); i++) {
 			personneFonction = personne.getPersonneFonctions().get(i);
@@ -147,102 +170,8 @@ public class PersonneController {
 		// model.addAttribute("personnes", personneRepository.findAll());
 		return "redirect:personnes";
 		// return "personne/list";
-	}
 
-	// @RequestMapping(value = "/personne", method = RequestMethod.POST, params
-	// = "add")
-	// public String addPersonne(@RequestParam String nom, @RequestParam String
-	// prenom,
-	// @RequestParam("surnom") String[] surnoms, @RequestParam(value = "email")
-	// String[] emails,
-	// @RequestParam(value = "polariser", required = false) String[] polarisers,
-	// @RequestParam(value = "photo", required = false) MultipartFile[] photos,
-	// @RequestParam(value = "fonction", required = false) String[] fonctions,
-	// @RequestParam(value = "dd", required = false) String[] dds,
-	// @RequestParam(value = "df", required = false) String[] dfs) throws
-	// IOException {
-	// // @RequestParam("file") MultipartFile[] files
-	//
-	// // A changer
-	// Personne per = new Personne();
-	// Surnom s;
-	// Email em;
-	// //
-	// per.setNom(nom);
-	// per.setPrenom(prenom);
-	// per.setDateNaissance(new Date());
-	// per = personneRepository.save(per);
-	//
-	// // List<Surnom> listSurnoms = new ArrayList<Surnom>();
-	//
-	// for (int i = 0; i < surnoms.length; i++) {
-	// s = new Surnom();
-	// // System.out.println(surnoms[i]);
-	// s.setSurnom(surnoms[i]);
-	// s.setPersonne(per);
-	// surnomRepository.save(s);
-	// }
-	//
-	// System.out.println("emails " + emails.length);
-	// System.out.println("polariser :" + polarisers.length);
-	//
-	// // System.out.println("polarisers " + polarisers.length);
-	//
-	// for (int i = 0; i < emails.length; i++) {
-	// em = new Email();
-	// em.setEmail(emails[i]);
-	// if (polarisers[i].equalsIgnoreCase("oui")) {
-	// em.setPola(true);
-	// } else {
-	// em.setPola(false);
-	// }
-	// em.setPersonne(per);
-	// emailRepository.save(em);
-	// }
-	//
-	// //
-	// Photo photo;
-	// System.out.println("path" + path);
-	// for (int i = 0; i < photos.length; i++) {
-	// photo = new Photo();
-	// StringBuilder uniqueFileName = new
-	// StringBuilder(uniqueFileName(photos[i].getOriginalFilename()));
-	// System.out.println("uniqueFileName " + uniqueFileName);
-	// StringBuilder newFileName = new StringBuilder(path + uniqueFileName);
-	// System.out.println("newFileName to string :"+newFileName);
-	// photo.setNomPhoto(uniqueFileName.toString());
-	// photo.setUrlPhoto(newFileName.toString());
-	// photo.setPersonne(per);
-	// //
-	// uploadFile(photos[i], newFileName.toString());
-	// //
-	// photoRepository.save(photo);
-	// }
-	//
-	// // System.out.println(photos[0].getOriginalFilename());
-	//
-	// // traitement upload photos
-	//
-	// //
-	// Fonction fon;
-	// PersonneFonction perFon;
-	// for (int i = 0; i < fonctions.length; i++) {
-	// fon = new Fonction();
-	// perFon = new PersonneFonction();
-	// fon.setFonction(fonctions[i]);
-	// fon = fonctionRepository.save(fon);
-	//
-	// perFon.setFonction(fon);
-	//
-	// System.out.println(dds[i]);
-	// perFon.setDateDebut(new Date());
-	// perFon.setDateFin(new Date());
-	// perFon.setPersonne(per);
-	// personneFonctionRepository.save(perFon);
-	// }
-	//
-	// return "personne/add";
-	// }
+	}
 
 	@RequestMapping(value = "/personne", method = RequestMethod.GET, params = "view")
 	public String personneView(@RequestParam long id, Model model) {
@@ -250,7 +179,6 @@ public class PersonneController {
 		return "personne/view";
 	}
 
-	// C:\\uploadfiles\
 	public void uploadFile(MultipartFile file, String desti) throws IOException {
 
 		InputStream in = file.getInputStream();
@@ -261,8 +189,9 @@ public class PersonneController {
 	public String uniqueFileName(String fileName) {
 		Random random = new Random();
 		int randomNumber = random.nextInt(100 - 1) + 1;
-
-		String fileExtention = fileName.substring(fileName.length() - 3);
+		String fileExtention = null;
+		if (fileName != null)
+			fileExtention = fileName.substring(fileName.length() - 3);
 		Calendar cal = Calendar.getInstance();
 
 		Long uniqueNumber = cal.getTimeInMillis() / 10000;

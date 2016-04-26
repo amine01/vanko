@@ -8,12 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Personne extends UrlEntity {
 
 	@Column
+	@NotBlank
 	private String nom;
 	@Column
 	private String prenom;
@@ -21,6 +25,7 @@ public class Personne extends UrlEntity {
 	private Date dateNaissance;
 
 	@OneToMany(mappedBy="personne")
+	@Valid
 	private List<Surnom> surnoms;
 	
 	@OneToMany(mappedBy="personne")

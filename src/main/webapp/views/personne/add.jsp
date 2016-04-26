@@ -220,9 +220,6 @@
 
 	<a href="personnes">liste des personnes</a>
 
-	<%-- 	<form action="/vanko/personne" method="post"
-		enctype="multipart/form-data"> --%>
-
 
 	<form:form action="/vanko/personne" method="POST"
 		commandName="personne" enctype="multipart/form-data">
@@ -235,7 +232,12 @@
 			<ul>
 				<!-- <li>Nom : <input type="text" name="nom" /></li> -->
 				<spring:bind path="nom">
-					<li>Nom :<form:input type="text" path="nom" /></li>
+					<li>
+					Nom :<form:input type="text" path="nom" /> 
+					<form:errors path="nom" />
+					
+					</li>
+					
 				</spring:bind>
 
 				<spring:bind path="prenom">
@@ -260,7 +262,7 @@
 
 				<spring:bind path="surnoms[0].surnom">
 					<li>Surnom :<form:input type="text" path="surnoms[0].surnom"
-							id="surnom" /></li>
+							id="surnom" /> <form:errors path="surnoms[0].surnom" /></li>
 				</spring:bind>
 
 
@@ -286,9 +288,6 @@
 						</form:select>
 					</li>
 				</spring:bind>
-				<!-- 			OUI:<input type="radio" name="polariser[0]" value="oui"> -->
-				<!-- 			NON:<input type="radio" name="polariser[0]" value="non" checked="checked"> -->
-
 
 			</ul>
 		</fieldset>

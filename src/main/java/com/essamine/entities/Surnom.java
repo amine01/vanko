@@ -4,10 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 public class Surnom extends UrlEntity {
 
 	@Column
+	@NotBlank
 	private String surnom;
 	@ManyToOne(optional=false)
 	private Personne personne;
