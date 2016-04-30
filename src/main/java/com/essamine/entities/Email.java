@@ -4,10 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 public class Email extends UrlEntity {
 	@Column
+	@NotBlank
 	private String email;
+	
 	@Column
 	private Boolean pola;
 	

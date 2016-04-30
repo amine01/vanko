@@ -29,12 +29,15 @@ public class Personne extends UrlEntity {
 	private List<Surnom> surnoms;
 	
 	@OneToMany(mappedBy="personne")
+	@Valid
 	private List<Email> emails;
 	
 	@OneToMany(mappedBy="personne")
+	@Valid
 	private List<Photo> photos;
 	
 	@OneToMany(mappedBy="personne")
+	@Valid
 	private List<PersonneFonction> personneFonctions;
 
 	// Getters & Setters

@@ -3,6 +3,7 @@ package com.essamine.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -18,9 +19,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.essamine.entities.Email;
@@ -29,6 +33,8 @@ import com.essamine.entities.Personne;
 import com.essamine.entities.PersonneFonction;
 import com.essamine.entities.Photo;
 import com.essamine.entities.Surnom;
+import com.essamine.helps.ErrorMessage;
+import com.essamine.helps.ValidationResponse;
 import com.essamine.repositories.EmailRepository;
 import com.essamine.repositories.FonctionRepository;
 import com.essamine.repositories.PersonneFonctionRepository;
@@ -63,6 +69,9 @@ public class PersonneController {
 
 	@Autowired
 	PhotoRepository photoRepository;
+	
+//	
+
 
 	// i am here
 	@RequestMapping(value = "/personnes", method = RequestMethod.GET)
@@ -103,72 +112,96 @@ public class PersonneController {
 		return "personne/add";
 	}
 
+	// @RequestMapping(value = "/personne", method = RequestMethod.POST)
+	// public String filterPersonnes(@RequestParam String word) {
+	//
+	// return "";
+	// }
+
 	@RequestMapping(value = "/personne", method = RequestMethod.POST)
-	public String filterPersonnes(@RequestParam String word) {
-
-		return "";
-	}
-
-	@RequestMapping(value = "/personne", method = RequestMethod.POST, params = "add")
-	public String addPersonne(@Valid Personne personne, BindingResult bResult) throws IOException {
+	public String processFormAjax(@ModelAttribute(value = "personne") @Valid Personne personne, BindingResult bResult) {
 		if (bResult.hasErrors()) {
 			return "personne/add";
-		}
-		//
-		List<Surnom> surnoms = personne.getSurnoms();
-		List<Email> emails = personne.getEmails();
-		List<Photo> photos = personne.getPhotos();
-		List<PersonneFonction> personneFonctions = personne.getPersonneFonctions();
-
-		//
-		personne = personneRepository.save(personne);
-		Surnom surnom;
-		Email email;
-		Photo photo;
-		PersonneFonction personneFonction;
-		Fonction fonction;
-
-		for (int i = 0; i < surnoms.size(); i++) {
-			surnom = personne.getSurnoms().get(i);
-			surnom.setPersonne(personne);
-			surnomRepository.save(surnom);
+		} else {
+			return "personne/add";
 		}
 
-		for (int i = 0; i < emails.size(); i++) {
-			email = personne.getEmails().get(i);
-			email.setPersonne(personne);
-			emailRepository.save(email);
-		}
-
-		for (int i = 0; i < photos.size(); i++) {
-			photo = personne.getPhotos().get(i);
-			// upload photo
-			StringBuilder uniqueFileName = new StringBuilder(
-					uniqueFileName(photos.get(i).getFile().getOriginalFilename()));
-			StringBuilder newFileName = new StringBuilder(path + uniqueFileName);
-			photo.setNomPhoto(uniqueFileName.toString());
-			photo.setUrlPhoto(newFileName.toString());
-			System.out.println("getOriginalFilename : " + photos.get(i).getFile().getOriginalFilename());
-			System.out.println("name : " + photos.get(i).getFile().getName());
-
-			uploadFile(photos.get(i).getFile(), newFileName.toString());
+	}
+//	, headers = "content-type!=multipart/form-data"
+	@RequestMapping(value = "/personne.json", method = RequestMethod.POST, params = "add", headers = "content-type!=multipart/form-data")
+	public @ResponseBody ValidationResponse addPersonne(@ModelAttribute(value = "personne") @Valid Personne personne,
+			BindingResult bResult) throws IOException {
+		System.out.println("/personne");
+		ValidationResponse res = new ValidationResponse();
+		if (bResult.hasErrors()) {
+			res.setStatus("FAIL");
+			System.out.println("hasErrors");
+			List<FieldError> allErrors = bResult.getFieldErrors();
+			List<ErrorMessage> errorMesages = new ArrayList<ErrorMessage>();
+			for (FieldError objectError : allErrors) {
+				errorMesages.add(new ErrorMessage(objectError.getField(),
+						objectError.getField() + "  " + objectError.getDefaultMessage()));
+			}
+			res.setErrorMessageList(errorMesages);
+			// return "personne/add";
+		} else {
+			res.setStatus("SUCCESS");
 			//
-			photo.setPersonne(personne);
-			photoRepository.save(photo);
+			List<Surnom> surnoms = personne.getSurnoms();
+			List<Email> emails = personne.getEmails();
+			List<Photo> photos = personne.getPhotos();
+			List<PersonneFonction> personneFonctions = personne.getPersonneFonctions();
+
+			//
+			personne = personneRepository.save(personne);
+			Surnom surnom;
+			Email email;
+			Photo photo;
+			PersonneFonction personneFonction;
+			Fonction fonction;
+
+			for (int i = 0; i < surnoms.size(); i++) {
+				surnom = personne.getSurnoms().get(i);
+				surnom.setPersonne(personne);
+				surnomRepository.save(surnom);
+			}
+
+			for (int i = 0; i < emails.size(); i++) {
+				email = personne.getEmails().get(i);
+				email.setPersonne(personne);
+				emailRepository.save(email);
+			}
+
+			for (int i = 0; i < photos.size(); i++) {
+				photo = personne.getPhotos().get(i);
+				// upload photo
+				StringBuilder uniqueFileName = new StringBuilder(
+						uniqueFileName(photos.get(i).getFile().getOriginalFilename()));
+				StringBuilder newFileName = new StringBuilder(path + uniqueFileName);
+				photo.setNomPhoto(uniqueFileName.toString());
+				photo.setUrlPhoto(newFileName.toString());
+				System.out.println("getOriginalFilename : " + photos.get(i).getFile().getOriginalFilename());
+				System.out.println("name : " + photos.get(i).getFile().getName());
+
+				uploadFile(photos.get(i).getFile(), newFileName.toString());
+				//
+				photo.setPersonne(personne);
+				photoRepository.save(photo);
+			}
+
+			for (int i = 0; i < personneFonctions.size(); i++) {
+				personneFonction = personne.getPersonneFonctions().get(i);
+				fonction = fonctionRepository.save(personneFonction.getFonction());
+
+				personneFonction.setFonction(fonction);
+				personneFonction.setPersonne(personne);
+
+				personneFonctionRepository.save(personneFonction);
+
+			}
+			// model.addAttribute("personnes", personneRepository.findAll());
 		}
-
-		for (int i = 0; i < personneFonctions.size(); i++) {
-			personneFonction = personne.getPersonneFonctions().get(i);
-			fonction = fonctionRepository.save(personneFonction.getFonction());
-
-			personneFonction.setFonction(fonction);
-			personneFonction.setPersonne(personne);
-
-			personneFonctionRepository.save(personneFonction);
-
-		}
-		// model.addAttribute("personnes", personneRepository.findAll());
-		return "redirect:personnes";
+		return res;
 		// return "personne/list";
 
 	}
@@ -199,5 +232,15 @@ public class PersonneController {
 
 		return uniqueFileName;
 	}
-
+	
+//	@InitBinder
+//	public void initBinder(WebDataBinder binder) {
+//		
+////		binder.registerCustomEditor(Date.class, "passport.valid_date", new CustomDateEditor(dateFormat, true));photos[0].file
+//		
+//		binder.registerCustomEditor(byte[].class,"personne.photos[0].file", new ByteArrayMultipartFileEditor());
+//	}
+	
+	
+	
 }

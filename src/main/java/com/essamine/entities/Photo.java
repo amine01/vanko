@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Photo extends UrlEntity {
 	
 	@Column
+	@NotBlank
 	private String nomPhoto;
 	@Column
 	private String urlPhoto;

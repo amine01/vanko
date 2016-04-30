@@ -6,9 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 public class Fonction extends UrlEntity {
 	@Column
+	@NotBlank
 	private String fonction;
 
 	
